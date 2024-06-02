@@ -1,0 +1,473 @@
+basePath: /v1
+definitions:
+  models.AuthLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.CustomerRegister:
+    properties:
+      email:
+        type: string
+      name:
+        minLength: 3
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  models.CustomerUpdate:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/models.Status'
+      updated_by:
+        type: string
+    type: object
+  models.OrderProduct:
+    properties:
+      product_id:
+        type: string
+      qty:
+        type: number
+    required:
+    - product_id
+    - qty
+    type: object
+  models.OrderRegister:
+    properties:
+      payment:
+        type: boolean
+      products:
+        items:
+          $ref: '#/definitions/models.OrderProduct'
+        type: array
+    required:
+    - payment
+    - products
+    type: object
+  models.ProductRegister:
+    properties:
+      name:
+        minLength: 3
+        type: string
+      price:
+        type: number
+      status:
+        $ref: '#/definitions/models.Status'
+      stock:
+        type: number
+    required:
+    - name
+    - price
+    - stock
+    type: object
+  models.ProductUpdate:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      status:
+        $ref: '#/definitions/models.Status'
+      stock:
+        type: number
+      updated_by:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  models.Status:
+    enum:
+    - active
+    - inactive
+    - deleted
+    type: string
+    x-enum-varnames:
+    - StatusActive
+    - StatusInactive
+    - StatusDeleted
+host: localhost:3001
+info:
+  contact: {}
+  description: This is a backend test API for DBO.
+  title: DBO Backend Test API
+  version: "1"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a customer
+      parameters:
+      - description: Auth
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Login a customer
+      tags:
+      - auth
+  /customers:
+    get:
+      consumes:
+      - application/json
+      description: Get list customer
+      parameters:
+      - collectionFormat: multi
+        description: string collection
+        in: query
+        items:
+          type: string
+        name: collection
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get list customer
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a customer
+      parameters:
+      - description: Customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerRegister'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "302":
+          description: Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create a customer
+      tags:
+      - customers
+  /customers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a customer
+      tags:
+      - customers
+    get:
+      consumes:
+      - application/json
+      description: Get a customer by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a customer by id
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update a customer
+      parameters:
+      - description: Customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerUpdate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "302":
+          description: Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a customer
+      tags:
+      - customers
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: Create an order
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderRegister'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create an order
+      tags:
+      - orders
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: List a product
+      parameters:
+      - collectionFormat: multi
+        description: string collection
+        in: query
+        items:
+          type: string
+        name: collection
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: List a product
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Create a product
+      parameters:
+      - description: Product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductRegister'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create a product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: Get a product by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a product by id
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: Update a product
+      parameters:
+      - description: Product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductUpdate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "302":
+          description: Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a product
+      tags:
+      - products
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

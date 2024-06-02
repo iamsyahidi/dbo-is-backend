@@ -1,0 +1,65 @@
+package controllers
+
+import (
+	"dbo/dbo-is-backend/middleware"
+	"dbo/dbo-is-backend/models"
+	"dbo/dbo-is-backend/pkg/logger"
+	"dbo/dbo-is-backend/services"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type authController struct {
+	authService services.AuthServiceInterface
+}
+
+type AuthControllerInterface interface {
+	Login(c *gin.Context)
+}
+
+func NewAuthController(authService services.AuthServiceInterface) AuthControllerInterface {
+	return &authController{
+		authService: authService,
+	}
+}
+
+// Login godoc
+// @Summary Login a customer
+// @Description Login a customer
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param auth body models.AuthLogin true "Auth"
+// @Response 200 {object} models.Response
+// @Response 500 {object} models.Response
+// @Response 400 {object} models.Response
+// @Router /auth/login [post]
+func (ac *authController) Login(c *gin.Context) {
+	var authLogin models.AuthLogin
+	if err := c.ShouldBindJSON(&authLogin); err != nil {
+		middleware.Response(c, authLogin, models.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+
+	auth := models.AuthLogin{
+		Email:    authLogin.Email,
+		Password: authLogin.Password,
+	}
+
+	response, err := ac.authService.Login(&auth)
+	if err != nil {
+		logger.Err(err.Error())
+		c.JSON(500, models.Response{
+			Code:    http.StatusInternalServerError,
+			Message: http.StatusText(http.StatusInternalServerError),
+		})
+		return
+	}
+
+	middleware.Response(c, authLogin, *response)
+}

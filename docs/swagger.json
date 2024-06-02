@@ -1,0 +1,724 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a backend test API for DBO.",
+        "title": "DBO Backend Test API",
+        "contact": {},
+        "version": "1"
+    },
+    "host": "localhost:3001",
+    "basePath": "/v1",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "Login a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login a customer",
+                "parameters": [
+                    {
+                        "description": "Auth",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AuthLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get list customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get list customer",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "description": "string collection",
+                        "name": "collection",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a customer",
+                "parameters": [
+                    {
+                        "description": "Customer",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "302": {
+                        "description": "Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a customer by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get a customer by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Update a customer",
+                "parameters": [
+                    {
+                        "description": "Customer",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "302": {
+                        "description": "Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete a customer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "post": {
+                "description": "Create an order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Create an order",
+                "parameters": [
+                    {
+                        "description": "Order",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "List a product",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "description": "string collection",
+                        "name": "collection",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create a product",
+                "parameters": [
+                    {
+                        "description": "Product",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProductRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a product by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get a product by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Update a product",
+                "parameters": [
+                    {
+                        "description": "Product",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProductUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "302": {
+                        "description": "Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Delete a product",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AuthLogin": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CustomerRegister": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CustomerUpdate": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.Status"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OrderProduct": {
+            "type": "object",
+            "required": [
+                "product_id",
+                "qty"
+            ],
+            "properties": {
+                "product_id": {
+                    "type": "string"
+                },
+                "qty": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.OrderRegister": {
+            "type": "object",
+            "required": [
+                "payment",
+                "products"
+            ],
+            "properties": {
+                "payment": {
+                    "type": "boolean"
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderProduct"
+                    }
+                }
+            }
+        },
+        "models.ProductRegister": {
+            "type": "object",
+            "required": [
+                "name",
+                "price",
+                "stock"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "price": {
+                    "type": "number"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.Status"
+                },
+                "stock": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.ProductUpdate": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.Status"
+                },
+                "stock": {
+                    "type": "number"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Status": {
+            "type": "string",
+            "enum": [
+                "active",
+                "inactive",
+                "deleted"
+            ],
+            "x-enum-varnames": [
+                "StatusActive",
+                "StatusInactive",
+                "StatusDeleted"
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
