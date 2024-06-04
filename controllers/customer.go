@@ -152,7 +152,7 @@ func (cc *customerController) UpdateCustomer(c *gin.Context) {
 
 	v, ok := c.Get("customer")
 	if !ok {
-		c.JSON(401, models.Response{
+		middleware.Response(c, "", models.Response{
 			Code:    http.StatusUnauthorized,
 			Message: http.StatusText(http.StatusUnauthorized),
 		})
@@ -209,7 +209,7 @@ func (cc *customerController) UpdateCustomer(c *gin.Context) {
 func (cc *customerController) DeleteCustomer(c *gin.Context) {
 	v, ok := c.Get("customer")
 	if !ok {
-		c.JSON(401, models.Response{
+		middleware.Response(c, "", models.Response{
 			Code:    http.StatusUnauthorized,
 			Message: http.StatusText(http.StatusUnauthorized),
 		})
@@ -226,9 +226,19 @@ func (cc *customerController) DeleteCustomer(c *gin.Context) {
 		return
 	}
 
+	customerClaims, ok := v.(*models.CustomerClaims)
+	if !ok {
+		middleware.Response(c, id, models.Response{
+			Code:    http.StatusInternalServerError,
+			Message: "Failed to cast customer claims",
+			Data:    nil,
+		})
+		return
+	}
+
 	customerDelete := models.CustomerUpdate{
 		ID:        id,
-		UpdatedBy: v.(*models.CustomerClaims).Name,
+		UpdatedBy: customerClaims.Name,
 	}
 	response, err := cc.customerService.DeleteCustomer(&customerDelete)
 	if err != nil {
