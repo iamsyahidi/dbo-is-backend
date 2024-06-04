@@ -54,9 +54,9 @@ func (ac *authController) Login(c *gin.Context) {
 	response, err := ac.authService.Login(&auth)
 	if err != nil {
 		logger.Err(err.Error())
-		c.JSON(500, models.Response{
-			Code:    http.StatusInternalServerError,
-			Message: http.StatusText(http.StatusInternalServerError),
+		middleware.Response(c, authLogin, models.Response{
+			Code:    http.StatusUnauthorized,
+			Message: http.StatusText(http.StatusUnauthorized),
 		})
 		return
 	}
