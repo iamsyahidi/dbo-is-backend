@@ -39,7 +39,7 @@ func NewOrderController(orderService services.OrderServiceInterface) OrderContro
 func (oc *orderController) CreateOrder(c *gin.Context) {
 	v, ok := c.Get("customer")
 	if !ok {
-		c.JSON(401, models.Response{
+		middleware.Response(c, "", models.Response{
 			Code:    http.StatusUnauthorized,
 			Message: http.StatusText(http.StatusUnauthorized),
 		})
@@ -62,13 +62,12 @@ func (oc *orderController) CreateOrder(c *gin.Context) {
 		CreatedBy:  v.(*models.CustomerClaims).Name,
 	}
 
-	var orderDetail []models.OrderDetail
-	for _, e := range orderRegister.Products {
-		detail := models.OrderDetail{
+	orderDetail := make([]models.OrderDetail, len(orderRegister.Products))
+	for i, e := range orderRegister.Products {
+		orderDetail[i] = models.OrderDetail{
 			ProductID: e.ProductID,
 			Qty:       e.Qty,
 		}
-		orderDetail = append(orderDetail, detail)
 	}
 
 	response, err := oc.orderService.CreateOrder(&order, &orderDetail)
