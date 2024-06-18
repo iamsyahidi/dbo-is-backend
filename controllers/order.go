@@ -26,15 +26,15 @@ func NewOrderController(orderService services.OrderServiceInterface) OrderContro
 
 // CreateOrder godoc
 // @Summary Create an order
-// @Description Create an order
+// @Description Creates a new order
 // @Tags orders
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Param order body models.OrderRegister true "Order"
-// @Response 201 {object} models.Response
-// @Response 500 {object} models.Response
-// @Response 400 {object} models.Response
-// @Response 404 {object} models.Response
+// @Success 201 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /orders [post]
 func (oc *orderController) CreateOrder(c *gin.Context) {
 	v, ok := c.Get("customer")

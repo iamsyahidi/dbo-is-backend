@@ -30,10 +30,10 @@ func NewAuthController(authService services.AuthServiceInterface) AuthController
 // @Tags auth
 // @Accept  json
 // @Produce  json
-// @Param auth body models.AuthLogin true "Auth"
-// @Response 200 {object} models.Response
-// @Response 500 {object} models.Response
-// @Response 400 {object} models.Response
+// @Param body body models.AuthLogin true "Auth"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /auth/login [post]
 func (ac *authController) Login(c *gin.Context) {
 	var authLogin models.AuthLogin

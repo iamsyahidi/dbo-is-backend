@@ -11,6 +11,8 @@ import (
 	"log"
 	"os"
 
+	_ "dbo/dbo-is-backend/docs"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
@@ -19,15 +21,15 @@ import (
 
 // @title DBO Backend Test API
 // @description This is a backend test API for DBO.
-// @version 1
+// @version 1.0
 // @host localhost:3001
 // @BasePath /v1
-// @SecurityDefinitions.apikey ApiKeyAuth
-// @in header
-// @name Authorization
 // @schemes http
 // @contact.name Ilham Syahidi
 // @contact.email ilhamsyahidi66@gmail.com
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -41,7 +43,6 @@ func main() {
 		panic(err)
 	}
 
-	gin.ForceConsoleColor()
 	gin.SetMode(gin.DebugMode)
 
 	// Repositories
@@ -68,5 +69,3 @@ func main() {
 	port := fmt.Sprintf(":%s", os.Getenv("HTTP_PORT"))
 	router.Run(port)
 }
-
-//TODO add swagger docs, setup env db

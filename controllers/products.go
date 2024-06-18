@@ -35,8 +35,8 @@ func NewProductController(productService services.ProductServiceInterface) Produ
 // @Accept  json
 // @Produce  json
 // @Param product body models.ProductRegister true "Product"
-// @Response 201 {object} models.Response
-// @Response 500 {object} models.Response
+// @Success 201 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /products [post]
 func (pc *productController) CreateProduct(c *gin.Context) {
 	var productRegister models.ProductRegister
@@ -49,13 +49,13 @@ func (pc *productController) CreateProduct(c *gin.Context) {
 		return
 	}
 
-	customer := models.Product{
+	product := models.Product{
 		Name:  productRegister.Name,
 		Price: productRegister.Price,
 		Stock: productRegister.Stock,
 	}
 
-	response, err := pc.productService.CreateProduct(&customer)
+	response, err := pc.productService.CreateProduct(&product)
 	if err != nil {
 		logger.Err(err.Error())
 		middleware.Response(c, productRegister, models.Response{
@@ -69,7 +69,7 @@ func (pc *productController) CreateProduct(c *gin.Context) {
 	middleware.Response(c, productRegister, *response)
 }
 
-// ListProduct godoc
+// GetProducts godoc
 // @Summary List a product
 // @Description List a product
 // @Tags products
@@ -77,9 +77,9 @@ func (pc *productController) CreateProduct(c *gin.Context) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param collection query []string false "string collection" collectionFormat(multi)
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /products [get]
 func (pc *productController) GetProducts(c *gin.Context) {
 	filter := c.Request.URL.Query()
@@ -97,16 +97,16 @@ func (pc *productController) GetProducts(c *gin.Context) {
 	middleware.Response(c, filter, *response)
 }
 
-// FindProduct godoc
+// GetProductById godoc
 // @Summary Get a product by id
 // @Description Get a product by id
 // @Tags products
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /products/{id} [get]
 func (pc *productController) GetProductById(c *gin.Context) {
 	id := c.Param("id")
@@ -140,13 +140,12 @@ func (pc *productController) GetProductById(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param product body models.ProductUpdate true "Product"
-// @Response 201 {object} models.Response
-// @Response 500 {object} models.Response
-// @Response 400 {object} models.Response
-// @Response 302 {object} models.Response
+// @Success 201 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 302 {object} models.Response
 // @Router /products/{id} [put]
 func (pc *productController) UpdateProduct(c *gin.Context) {
-
 	v, ok := c.Get("customer")
 	if !ok {
 		c.JSON(401, models.Response{
@@ -199,9 +198,9 @@ func (pc *productController) UpdateProduct(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /products/{id} [delete]
 func (pc *productController) DeleteProduct(c *gin.Context) {
 	v, ok := c.Get("customer")

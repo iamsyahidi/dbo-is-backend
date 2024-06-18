@@ -35,10 +35,10 @@ func NewCustomerController(customerService services.CustomerServiceInterface) Cu
 // @Accept  json
 // @Produce  json
 // @Param customer body models.CustomerRegister true "Customer"
-// @Response 201 {object} models.Response
-// @Response 500 {object} models.Response
-// @Response 400 {object} models.Response
-// @Response 302 {object} models.Response
+// @Success 201 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 302 {object} models.Response
 // @Router /customers [post]
 func (cc *customerController) CreateCustomer(c *gin.Context) {
 	var customerRegister models.CustomerRegister
@@ -72,16 +72,17 @@ func (cc *customerController) CreateCustomer(c *gin.Context) {
 	middleware.Response(c, customerRegister, *response)
 }
 
-// FindCustomer godoc
+// GetCustomerById godoc
 // @Summary Get a customer by id
 // @Description Get a customer by id
 // @Tags customers
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Param id path string true "Customer ID"
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /customers/{id} [get]
 func (cc *customerController) GetCustomerById(c *gin.Context) {
 	id := c.Param("id")
@@ -108,7 +109,7 @@ func (cc *customerController) GetCustomerById(c *gin.Context) {
 	middleware.Response(c, id, *response)
 }
 
-// ListCustomer godoc
+// GetCustomers godoc
 // @Summary Get list customer
 // @Description Get list customer
 // @Tags customers
@@ -116,9 +117,9 @@ func (cc *customerController) GetCustomerById(c *gin.Context) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param collection query []string false "string collection" collectionFormat(multi)
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /customers [get]
 func (cc *customerController) GetCustomers(c *gin.Context) {
 	filter := c.Request.URL.Query()
@@ -143,13 +144,12 @@ func (cc *customerController) GetCustomers(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param customer body models.CustomerUpdate true "Customer"
-// @Response 201 {object} models.Response
-// @Response 500 {object} models.Response
-// @Response 400 {object} models.Response
-// @Response 302 {object} models.Response
+// @Success 201 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 302 {object} models.Response
 // @Router /customers/{id} [put]
 func (cc *customerController) UpdateCustomer(c *gin.Context) {
-
 	v, ok := c.Get("customer")
 	if !ok {
 		middleware.Response(c, "", models.Response{
@@ -202,9 +202,10 @@ func (cc *customerController) UpdateCustomer(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Response 200 {object} models.Response
-// @Response 404 {object} models.Response
-// @Response 500 {object} models.Response
+// @Param id path string true "Customer ID"
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /customers/{id} [delete]
 func (cc *customerController) DeleteCustomer(c *gin.Context) {
 	v, ok := c.Get("customer")
